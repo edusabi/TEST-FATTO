@@ -16,7 +16,7 @@ const Home = () => {
   // Função para buscar tarefas
   const fetchTarefas = async () => {
     try {
-      const response = await axios.get("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/getDados");
+      const response = await axios.get("https://fattotest.vercel.app/getDados");
       const dadosOrdenados = response.data.sort((a, b) => a.ordem - b.ordem); // Ordena os dados pela ordem
       setAllDados(dadosOrdenados);
     } catch (error) {
