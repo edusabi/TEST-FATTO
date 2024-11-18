@@ -16,7 +16,7 @@ const Home = () => {
   // Função para buscar tarefas
   const fetchTarefas = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getDados");
+      const response = await axios.get("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/getDados");
       const dadosOrdenados = response.data.sort((a, b) => a.ordem - b.ordem); // Ordena os dados pela ordem
       setAllDados(dadosOrdenados);
     } catch (error) {
@@ -46,7 +46,7 @@ const Home = () => {
 
     // Atualiza no back-end
     try {
-      await axios.put("http://localhost:3000/atualizarOrdem", {
+      await axios.put("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/atualizarOrdem", {
         novaOrdem: novaOrdem.map((item) => ({ id: item.id, ordem: item.ordem })),
       });
     } catch (error) {
@@ -86,7 +86,7 @@ const Home = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/addTarefa", tarefa);
+      const response = await axios.post("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/addTarefa", tarefa);
       if (response.status === 201) {
         closeModal2();
         fetchTarefas();
@@ -106,7 +106,7 @@ const Home = () => {
 
   const deletarUser = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/deletarTarefa/${id}`);
+      const response = await axios.delete(`https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/deletarTarefa/${id}`);
       if (response.status === 200) {
         closeModal();
         fetchTarefas();
@@ -131,7 +131,7 @@ const Home = () => {
     };
   
     try {
-      const response = await axios.put("http://localhost:3000/editTarefa", tarefaEdit);
+      const response = await axios.put("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/editTarefa", tarefaEdit);
       if (response.status === 200) {
         closeModal3(); // Fecha o modal de edição
         fetchTarefas(); // Atualiza a lista de tarefas
@@ -186,6 +186,7 @@ const Home = () => {
                 setNomeTarefaEdit(dados.nome); // Preenche o nome da tarefa no modal
                 setCustoEdit(dados.custo); // Preenche o custo da tarefa no modal
                 setDataLimiteEdit(dados.data_limite); // Preenche a data limite no modal
+                console.log(dados.data_limite)
                 setModalIsOpen3(true); // Abre o modal de edição
               }}
             />
