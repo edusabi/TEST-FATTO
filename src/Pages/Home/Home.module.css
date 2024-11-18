@@ -1,0 +1,157 @@
+.divPrincHome {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    justify-content: center;
+}
+
+.divPrincHome button {
+    cursor: pointer;
+}
+
+.buttonIncluir {
+    margin-top: 5rem;
+    width: 150px;
+    letter-spacing: 1px;
+    padding: .4rem 0;
+    cursor: pointer;
+}
+
+.iconsTable {
+    cursor: pointer;
+}
+
+/* Modal  */
+/* SeuArquivo.module.css */
+.modal {
+    border-radius: 5px;
+    padding: 20px;
+    width: 350px;
+    height: 400px;
+    max-width: 90%;
+    position: relative;
+    margin: auto;
+    border: transparent;
+    background-color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.modalEcluir{
+    border-radius: 5px;
+    padding: 10px;
+    width: 350px;
+    height: 350px;
+    max-width: 90%;
+    position: relative;
+    margin: auto;
+    border: transparent;
+    background-color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.modal form label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.modal form label input {
+    outline: none;
+    width: 200px;
+    padding: .2rem .1rem;
+}
+
+.modal form button {
+    width: 150px;
+    letter-spacing: 1px;
+    padding: .4rem 0;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table th,
+.table td {
+    text-align: center;
+}
+
+.iconsTable {
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: transform 0.2s ease;
+}
+
+.iconsTable:hover {
+    transform: scale(1.2);
+    color: #007bff;
+}
+
+.divButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.divButtons button {
+    margin-top: 5rem;
+    width: 150px;
+    letter-spacing: 1px;
+    padding: .4rem 0;
+    cursor: pointer;
+}
