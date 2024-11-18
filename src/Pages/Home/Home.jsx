@@ -46,7 +46,7 @@ const Home = () => {
 
     // Atualiza no back-end
     try {
-      await axios.put("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/atualizarOrdem", {
+      await axios.put("https://fattotest.vercel.app/atualizarOrdem", {
         novaOrdem: novaOrdem.map((item) => ({ id: item.id, ordem: item.ordem })),
       });
     } catch (error) {
@@ -86,7 +86,7 @@ const Home = () => {
     };
 
     try {
-      const response = await axios.post("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/addTarefa", tarefa);
+      const response = await axios.post("https://fattotest.vercel.app/addTarefa", tarefa);
       if (response.status === 201) {
         closeModal2();
         fetchTarefas();
@@ -106,7 +106,7 @@ const Home = () => {
 
   const deletarUser = async () => {
     try {
-      const response = await axios.delete(`https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/deletarTarefa/${id}`);
+      const response = await axios.delete(`https://fattotest.vercel.app/deletarTarefa/${id}`);
       if (response.status === 200) {
         closeModal();
         fetchTarefas();
@@ -131,7 +131,7 @@ const Home = () => {
     };
   
     try {
-      const response = await axios.put("https://fattotest-3ybpdtdbr-eduardos-projects-4adcea5f.vercel.app/editTarefa", tarefaEdit);
+      const response = await axios.put("https://fattotest.vercel.app/editTarefa", tarefaEdit);
       if (response.status === 200) {
         closeModal3(); // Fecha o modal de edição
         fetchTarefas(); // Atualiza a lista de tarefas
