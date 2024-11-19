@@ -83,12 +83,18 @@ const Home = () => {
     // Verificar se o nome da tarefa está vazio ou contém apenas espaços
     if (!nomeTarefa.trim()) {
       alert("O nome da tarefa não pode ser vazio!");
+      setCusto("");
+      setNomeTarefa("");
+      setDataLimite("");
       return;
     }
   
     // Verificar se o custo é um número válido e maior que zero
     if (!custo.trim() || isNaN(custo) || parseFloat(custo) <= 0) {
       alert("O custo deve ser um número válido e maior que zero!");
+      setCusto("");
+      setNomeTarefa("");
+      setDataLimite("");
       return;
     }
   
