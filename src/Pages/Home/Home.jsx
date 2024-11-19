@@ -13,29 +13,17 @@ const Home = () => {
   const [allDados, setAllDados] = useState([]);
   const [draggedIndex, setDraggedIndex] = useState(null);
 
-  // Função para formatar a data para o formato yyyy-MM-dd
-  const formatDate = (dateStr) => {
-    const [day, month, year] = dateStr.split("/");  // Divide a data
-    return `${year}-${month}-${day}`;  // Retorna no formato yyyy-MM-dd
-  };
-
   // Função para buscar tarefas
   const fetchTarefas = async () => {
     try {
       const response = await axios.get("https://fattotest.vercel.app/getDados");
       const dadosOrdenados = response.data.sort((a, b) => a.ordem - b.ordem); // Ordena os dados pela ordem
-
-      // Formata a dataLimite de todas as tarefas
-      const dadosComDataFormatada = dadosOrdenados.map((item) => ({
-        ...item,
-        data_limite: formatDate(item.data_limite),  // Aplica a formatação da data
-      }));
-
-      setAllDados(dadosComDataFormatada);
+      setAllDados(dadosOrdenados);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchTarefas();
@@ -115,14 +103,11 @@ const Home = () => {
       alert("A data limite deve ser válida!");
       return;
     }
-
-    // Formata a data para o formato correto
-    const dataFormatada = formatDate(dataLimite);
   
     const tarefa = {
       nomeTarefa,
       custo,
-      dataLimite: dataFormatada,  // Envia a data no formato correto
+      dataLimite,
     };
   
     try {
@@ -144,6 +129,7 @@ const Home = () => {
     }
   };
   
+  
 
   const deletarUser = async () => {
     try {
@@ -164,14 +150,11 @@ const Home = () => {
   const handleSubmitFormEdit = async (e) => {
     e.preventDefault();
   
-    // Formata a data para o formato correto
-    const dataFormatadaEdit = formatDate(dataLimiteEdit);
-  
     const tarefaEdit = {
       id, // Envia o ID da tarefa para o back-end
       nomeTarefa: nomeTarefaEdit, // Nome atualizado
       custo: custoEdit, // Custo atualizado
-      dataLimite: dataFormatadaEdit, // Data limite atualizada
+      dataLimite: dataLimiteEdit, // Data limite atualizada
     };
   
     try {
@@ -184,6 +167,18 @@ const Home = () => {
       console.error("Erro ao editar tarefa:", error);
     }
   };
+  
+  const formatDate = (dateStr) => {
+    const [day, month, year] = dateStr.split("/");  // Divide a data
+    return `${year}-${month}-${day}`;  // Retorna no formato "yyyy-MM-dd"
+  };
+  
+  // Ao preencher o modal de edição, formate a data
+  useEffect(() => {
+    if (allDados && allDados.data_limite) {
+      setDataLimiteEdit(formatDate(allDados.data_limite));  // Formata a data antes de definir
+    }
+  }, [allDados]);
   
 
   return (
@@ -230,6 +225,7 @@ const Home = () => {
                 setNomeTarefaEdit(dados.nome); // Preenche o nome da tarefa no modal
                 setCustoEdit(dados.custo); // Preenche o custo da tarefa no modal
                 setDataLimiteEdit(dados.data_limite); // Preenche a data limite no modal
+                console.log(dados.data_limite)
                 setModalIsOpen3(true); // Abre o modal de edição
               }}
             />
@@ -249,7 +245,113 @@ const Home = () => {
     </tbody>
   </table>
 )}
+
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        className={Style.modalEcluir}
+        overlayClassName={Style.overlay}
+      >
+        <h3>Realmente deseja excluir a tarefa?</h3>
+        <div className={Style.divButtons}>
+          <button onClick={deletarUser}>Sim</button>
+          <button onClick={closeModal}>Não</button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={modalIsOpen3}
+        onRequestClose={closeModal3}
+        className={Style.modal}
+        overlayClassName={Style.overlay}
+      >
+        <h2>Edite sua tarefa</h2>
+        <form onSubmit={handleSubmitFormEdit}>
+          <label>
+            <span>Nome da tarefa</span>
+            <input
+              type="text"
+              value={nomeTarefaEdit}
+              onChange={(e) => setNomeTarefaEdit(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Custo</span>
+            <input
+              type="number"
+              value={custoEdit}
+              onChange={(e) => setCustoEdit(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Data Limite</span>
+            <input
+              type="date"
+              name="dataLimite"
+              value={dataLimiteEdit}
+              onChange={(e) => setDataLimiteEdit(e.target.value)}
+              required
+            />
+          </label>
+
+          <button>Editar</button>
+        </form>
+        
+      </Modal>
+
+      <button className={Style.buttonIncluir} onClick={() => setModalIsOpen2(true)}>
+        Incluir
+      </button>
+
+      <Modal
+        isOpen={modalIsOpen2}
+        onRequestClose={closeModal2}
+        className={Style.modal}
+        overlayClassName={Style.overlay}
+      >
+        <h2>Adicione uma tarefa</h2>
+        <form onSubmit={handleSubmitForms}>
+          <label>
+            <span>Nome da tarefa</span>
+            <input
+              type="text"
+              value={nomeTarefa}
+              onChange={(e) => setNomeTarefa(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Custo</span>
+            <input
+              type="number"
+              value={custo}
+              onChange={(e) => setCusto(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            <span>Data Limite</span>
+            <input
+              type="date"
+              name="dataLimite"
+              value={dataLimite}
+              onChange={(e) => setDataLimite(e.target.value)}
+              required
+            />
+          </label>
+
+          <button>Adicionar</button>
+        </form>
+      </Modal>
     </div>
   );
 };
+
 export default Home;
