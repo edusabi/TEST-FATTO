@@ -82,8 +82,8 @@ const Home = () => {
   
     // Verificar se o nome da tarefa está vazio ou contém apenas espaços
     if (!nomeTarefa.trim()) {
-      alert("O nome da tarefa não pode ser vazio!");
       setCusto("");
+      alert("O nome da tarefa não pode ser vazio!");
       setNomeTarefa("");
       setDataLimite("");
       return;
@@ -167,18 +167,6 @@ const Home = () => {
       console.error("Erro ao editar tarefa:", error);
     }
   };
-  
-  const formatDate = (dateStr) => {
-    const [day, month, year] = dateStr.split("/");  // Divide a data
-    return `${year}-${month}-${day}`;  // Retorna no formato "yyyy-MM-dd"
-  };
-  
-  // Ao preencher o modal de edição, formate a data
-  useEffect(() => {
-    if (allDados && allDados.data_limite) {
-      setDataLimiteEdit(formatDate(allDados.data_limite));  // Formata a data antes de definir
-    }
-  }, [allDados]);
   
 
   return (
