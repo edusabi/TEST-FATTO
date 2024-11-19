@@ -24,7 +24,6 @@ const Home = () => {
     }
   };
   
-
   useEffect(() => {
     fetchTarefas();
   }, []);
@@ -122,8 +121,6 @@ const Home = () => {
       }
     }
   };
-  
-  
 
   const deletarUser = async () => {
     try {
@@ -161,74 +158,71 @@ const Home = () => {
       console.error("Erro ao editar tarefa:", error);
     }
   };
-  
 
   return (
     <div className={Style.divPrincHome}>
       <h1>Tarefas</h1>
       {allDados.length === 0 ? (
-  <p>Carregando...</p>
-) : (
-  <table className={Style.table}>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Custo</th>
-        <th>Data Limite</th>
-        <th>Editar</th>
-        <th>Excluir</th>
-      </tr>
-    </thead>
+        <p>Carregando...</p>
+      ) : (
+        <table className={Style.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Custo</th>
+              <th>Data Limite</th>
+              <th>Editar</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allDados.map((dados, index) => (
+              <tr
+                key={dados.id}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => handleDrop(index)}
+                style={{
+                  backgroundColor: dados.custo >= 1000 ? "yellow" : "transparent",
+                  cursor: "grab",
+                }}
+              >
+                <td>{dados.ordem}</td>
+                <td>{dados.nome}</td>
+                <td>{dados.custo}</td>
+                <td>{dados.data_limite}</td>
 
-    <tbody>
-      {allDados.map((dados, index) => (
-        <tr
-          key={dados.id}
-          draggable
-          onDragStart={() => handleDragStart(index)}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={() => handleDrop(index)}
-          style={{
-            backgroundColor: dados.custo >= 1000 ? "yellow" : "transparent",
-            cursor: "grab",
-          }}
-        >
-          <td>{dados.id}</td>
-          <td>{dados.nome}</td>
-          <td>{dados.custo}</td>
-          <td>{dados.data_limite}</td>
+                <td>
+                  <CiEdit
+                    className={Style.iconsTable}
+                    onClick={() => {
+                      setId(dados.id); // Armazena o ID da tarefa
+                      setNomeTarefaEdit(dados.nome); // Preenche o nome da tarefa no modal
+                      setCustoEdit(dados.custo); // Preenche o custo da tarefa no modal
+                      setDataLimiteEdit(dados.data_limite); // Preenche a data limite no modal
+                      setModalIsOpen3(true); // Abre o modal de edição
+                    }}
+                  />
+                </td>
 
-          <td>
-            <CiEdit
-              className={Style.iconsTable}
-              onClick={() => {
-                setId(dados.id); // Armazena o ID da tarefa
-                setNomeTarefaEdit(dados.nome); // Preenche o nome da tarefa no modal
-                setCustoEdit(dados.custo); // Preenche o custo da tarefa no modal
-                setDataLimiteEdit(dados.data_limite); // Preenche a data limite no modal
-                console.log(dados.data_limite)
-                setModalIsOpen3(true); // Abre o modal de edição
-              }}
-            />
-          </td>
+                <td>
+                  <FaRegTrashAlt
+                    className={Style.iconsTable}
+                    onClick={() => {
+                      setId(dados.id);
+                      setModalIsOpen(true);
+                    }}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
-          <td>
-            <FaRegTrashAlt
-              className={Style.iconsTable}
-              onClick={() => {
-                setId(dados.id);
-                setModalIsOpen(true);
-              }}
-            />
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-)}
-
-
+      {/* Modal de exclusão */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -242,6 +236,7 @@ const Home = () => {
         </div>
       </Modal>
 
+      {/* Modal de edição */}
       <Modal
         isOpen={modalIsOpen3}
         onRequestClose={closeModal3}
@@ -250,86 +245,78 @@ const Home = () => {
       >
         <h2>Edite sua tarefa</h2>
         <form onSubmit={handleSubmitFormEdit}>
-          <label>
-            <span>Nome da tarefa</span>
+          <div>
+            <label>Nome da Tarefa:</label>
             <input
               type="text"
               value={nomeTarefaEdit}
               onChange={(e) => setNomeTarefaEdit(e.target.value)}
-              required
             />
-          </label>
-
-          <label>
-            <span>Custo</span>
+          </div>
+          <div>
+            <label>Custo:</label>
             <input
               type="number"
               value={custoEdit}
               onChange={(e) => setCustoEdit(e.target.value)}
-              required
             />
-          </label>
-
-          <label>
-            <span>Data Limite</span>
+          </div>
+          <div>
+            <label>Data Limite:</label>
             <input
               type="date"
-              name="dataLimite"
               value={dataLimiteEdit}
               onChange={(e) => setDataLimiteEdit(e.target.value)}
-              required
             />
-          </label>
-
-          <button>Editar</button>
+          </div>
+          <div>
+            <button type="submit">Editar</button>
+            <button type="button" onClick={closeModal3}>
+              Fechar
+            </button>
+          </div>
         </form>
-        
       </Modal>
 
-      <button className={Style.buttonIncluir} onClick={() => setModalIsOpen2(true)}>
-        Incluir
-      </button>
-
+      {/* Modal de adição */}
       <Modal
         isOpen={modalIsOpen2}
         onRequestClose={closeModal2}
         className={Style.modal}
         overlayClassName={Style.overlay}
       >
-        <h2>Adicione uma tarefa</h2>
+        <h2>Adicionar Tarefa</h2>
         <form onSubmit={handleSubmitForms}>
-          <label>
-            <span>Nome da tarefa</span>
+          <div>
+            <label>Nome da Tarefa:</label>
             <input
               type="text"
               value={nomeTarefa}
               onChange={(e) => setNomeTarefa(e.target.value)}
-              required
             />
-          </label>
-
-          <label>
-            <span>Custo</span>
+          </div>
+          <div>
+            <label>Custo:</label>
             <input
               type="number"
               value={custo}
               onChange={(e) => setCusto(e.target.value)}
-              required
             />
-          </label>
-
-          <label>
-            <span>Data Limite</span>
+          </div>
+          <div>
+            <label>Data Limite:</label>
             <input
               type="date"
-              name="dataLimite"
               value={dataLimite}
               onChange={(e) => setDataLimite(e.target.value)}
-              required
             />
-          </label>
-
-          <button>Adicionar</button>
+          </div>
+          <div>
+            <button type="submit">Adicionar</button>
+            <button type="button" onClick={closeModal2}>
+              Fechar
+            </button>
+          </div>
         </form>
       </Modal>
     </div>
