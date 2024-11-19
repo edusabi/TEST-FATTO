@@ -79,10 +79,22 @@ const Home = () => {
   const handleSubmitForms = async (e) => {
     e.preventDefault();
   
-    // Verifique se os campos não estão vazios
-    if (!nomeTarefa || !custo || !dataLimite) {
-      alert("Por favor, preencha todos os campos antes de adicionar a tarefa.");
-      return; // Não envie a tarefa se algum campo estiver vazio
+    // Verificar se o nome da tarefa está vazio ou contém apenas espaços
+    if (!nomeTarefa.trim()) {
+      alert("O nome da tarefa não pode ser vazio!");
+      return;
+    }
+  
+    // Verificar se o custo é um número válido e maior que zero
+    if (!custo.trim() || isNaN(custo) || parseFloat(custo) <= 0) {
+      alert("O custo deve ser um número válido e maior que zero!");
+      return;
+    }
+  
+    // Verificar se a data é válida
+    if (!dataLimite || isNaN(Date.parse(dataLimite))) {
+      alert("A data limite deve ser válida!");
+      return;
     }
   
     const tarefa = {
@@ -96,9 +108,9 @@ const Home = () => {
       if (response.status === 201) {
         closeModal2();
         fetchTarefas();
-        setNomeTarefa(""); // Limpa o campo após sucesso
-        setCusto(""); // Limpa o campo após sucesso
-        setDataLimite(""); // Limpa o campo após sucesso
+        setNomeTarefa("");
+        setCusto("");
+        setDataLimite("");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -110,6 +122,8 @@ const Home = () => {
     }
   };
   
+  
+
   const deletarUser = async () => {
     try {
       const response = await axios.delete(`https://fattotest.vercel.app/deletarTarefa/${id}`);
@@ -167,49 +181,49 @@ const Home = () => {
     </thead>
 
     <tbody>
-  {allDados.map((dados, index) => (
-    <tr
-      key={dados.id}
-      draggable
-      onDragStart={() => handleDragStart(index)}
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={() => handleDrop(index)}
-      style={{
-        backgroundColor: dados.custo >= 1000 ? "yellow" : "transparent",
-        cursor: "grab",
-      }}
-    >
-      <td>{dados.id}</td>
-      <td>{dados.nome}</td>
-      <td>{dados.custo}</td>
-      <td>
-        {new Date(dados.data_limite).toLocaleDateString("pt-BR")}
-      </td> {/* Formatando a data */}
-      <td>
-        <CiEdit
-          className={Style.iconsTable}
-          onClick={() => {
-            setId(dados.id);
-            setNomeTarefaEdit(dados.nome);
-            setCustoEdit(dados.custo);
-            setDataLimiteEdit(dados.data_limite); // Exibindo a data corretamente no modal
-            setModalIsOpen3(true);
+      {allDados.map((dados, index) => (
+        <tr
+          key={dados.id}
+          draggable
+          onDragStart={() => handleDragStart(index)}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => handleDrop(index)}
+          style={{
+            backgroundColor: dados.custo >= 1000 ? "yellow" : "transparent",
+            cursor: "grab",
           }}
-        />
-      </td>
-      <td>
-        <FaRegTrashAlt
-          className={Style.iconsTable}
-          onClick={() => {
-            setId(dados.id);
-            setModalIsOpen(true);
-          }}
-        />
-      </td>
-    </tr>
-  ))}
-</tbody>
+        >
+          <td>{dados.id}</td>
+          <td>{dados.nome}</td>
+          <td>{dados.custo}</td>
+          <td>{dados.data_limite}</td>
 
+          <td>
+            <CiEdit
+              className={Style.iconsTable}
+              onClick={() => {
+                setId(dados.id); // Armazena o ID da tarefa
+                setNomeTarefaEdit(dados.nome); // Preenche o nome da tarefa no modal
+                setCustoEdit(dados.custo); // Preenche o custo da tarefa no modal
+                setDataLimiteEdit(dados.data_limite); // Preenche a data limite no modal
+                console.log(dados.data_limite)
+                setModalIsOpen3(true); // Abre o modal de edição
+              }}
+            />
+          </td>
+
+          <td>
+            <FaRegTrashAlt
+              className={Style.iconsTable}
+              onClick={() => {
+                setId(dados.id);
+                setModalIsOpen(true);
+              }}
+            />
+          </td>
+        </tr>
+      ))}
+    </tbody>
   </table>
 )}
 
