@@ -23,6 +23,7 @@ const Home = () => {
       console.error("Erro ao buscar dados:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchTarefas();
